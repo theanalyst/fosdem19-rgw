@@ -7,14 +7,15 @@
 --
 
 ### RGW
-+ A RESTful API access to object storage, a la S3 
-+ implements user accounts, acls, buckets
++ A RESTful API access to object storage
++ Immutable objects, not 1:1 mapped to rados objects
++ Implements user accounts, acls, buckets
 + heavy ecosystem of s3/swift client tooling can be leveraged against RGW
 
 ---
 
 ### RGW
-+ Supports a lot of S3 like features
++ Supports a lot of S3/swift like features
   - Multipart uploads
   - Object Versioning
   - torrents
@@ -27,11 +28,31 @@
 
 ---
 
+## Multisite
+
++ Built on principle that data changes are frequent, metadata changes
+  not so much
++ Data is replicated across zones, within zonegroups. Realms can
+  partition data in to namespaces.
++ There is a master zone which will be the source of truth for all
+  metadata
++ Data CP in local cluster, AP in remote
+
+---
+
 ## Sync Modules
 + Built atop of multisite
 + Leverages async metadata and data logs to decide on further actions
++ Modules can define whether they export data or only consume data.
 + Multisite itself is a default 'sync module'
-+ Currently requires in-tree builds 
++ Currently requires in-tree builds {C++} 
+
+--
+
++ Require their own zone 
++ Allows for integrating external services based on data/metadata in
+  RGW
++ For getting started writing one look at the log sync module
 
 ---
 
@@ -40,7 +61,6 @@
 + Sends object metadata to elasticsearch
 + Exposes a end-user api to forward queries to ES
 + Also get an overview of interesting object storage trends with ES queries
-> How busy is my object storage on friday evenings?
 
 --
 
@@ -48,24 +68,26 @@
 
 ---
 
-## Archive Sync Module
-
-+ Archives every object (uses object versioning)
-+ Allows for only one cluster to be an archive cluster with other clusters free
-  to delete the different object versions over time
-  
----
-
 ## Cloud Sync Module
 
 + Back up to a different cloud with s3 like apis (S3 itself?)
-+ Configurable mapping for buckets/users 
++ A cloud provider redundancy of sorts, useful for critical data backups
++ Configurable mapping for buckets/users
+
+---
+
+## Archive Sync Module
+
++ Archives every object (uses object versioning)
++ Allows for only one cluster to be an archive cluster with other
+  clusters free to delete the different object versions over time
 
 ---
 
 ## Pub Sub 
 
-+ Subscribe to notifications on modification events
++ Subscribe to notifications on modification events for a topic (a
+  bucket)
 
 ---
 
