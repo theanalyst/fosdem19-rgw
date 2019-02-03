@@ -6,15 +6,13 @@
 
 --
 
-### RGW
-+ A RESTful API access to object storage (swift/s3)
++ A RESTful API access to object storage
 + Immutable objects, not 1:1 mapped to rados objects
 + Implements user accounts, acls, buckets
 + heavy ecosystem of s3/swift client tooling can be leveraged against RGW
 
----
+--
 
-### RGW
 + Supports a lot of S3/swift like features
   - Multipart uploads
   - Object Versioning
@@ -33,18 +31,18 @@
 + Geographical redundancy with async data replication*
 + Data is replicated across zones, within zonegroups. Realms can
   partition data in to namespaces.
-+ Built on principle that data changes are frequent, metadata changes
-  not so much
 + There is a master zone which will be the source of truth for all
   metadata
++ Built on principle that data changes are frequent, metadata changes
+  not so much
 + Data CP in local cluster, AP in remote
 
 --
 
-### Async Export?
-
-Since we have the ability to notify the remote zone on data changes,
-an we utilize this for further external services?
++ Under the hood, done via logs for data, metadata changes and then
+  the remote zone syncs the objects.
++ Since we have the ability to notify the remote zone on data changes,
+  can we utilize this for further external services?
 
 
 ---
@@ -65,7 +63,7 @@ an we utilize this for further external services?
 
 ---
 
-## ElasticSearch
+### ElasticSearch
 
 + Sends object metadata to elasticsearch
 + Exposes a end-user api to forward queries to ES
@@ -77,7 +75,7 @@ an we utilize this for further external services?
 
 ---
 
-## Cloud Sync Module
+### Cloud Sync Module
 
 + Back up to a different cloud with s3 like apis (S3 itself?)
 + A cloud provider redundancy of sorts, useful for critical data backups
@@ -85,7 +83,7 @@ an we utilize this for further external services?
 
 ---
 
-## Archive Sync Module
+### Archive Sync Module
 
 + Archives every object (uses object versioning)
 + Allows for only one cluster to be an archive cluster with other
@@ -93,17 +91,14 @@ an we utilize this for further external services?
 
 ---
 
-## Pub Sub 
+### Pub Sub 
 
-+ Subscribe to notifications on modification events for a topic (a
-  bucket)
++ Subscribe to notifications on modification events for a topic
++ Object create/delete [marker] events supported
++ Push Notifications (HTTP & AQMP) coming soon
 
 ---
 
-- wiki: https://en.opensuse.org/openSUSE:Ceph
-- [opensuse-ceph@opensuse.org](mailto:opensuse-ceph@opensuse.org) - Discussion of Ceph specifically on openSUSE related queries
-- https://ceph.com/IRC/ - Ceph upstream community mailing lists and IRC channels
-- http://lists.suse.com/mailman/listinfo/deepsea-users - DeepSea upstream mailing list. 
-- https://groups.google.com/forum/#!forum/openattic-users - openATTIC upstream mailing list. 
-- https://github.com/ceph/ceph - upstream Ceph sources 
+- https://github.com/ceph/ceph - upstream Ceph project
+- https://ceph.com/IRC/ - Ceph upstream community mailing lists and IRC channels `#ceph`, `#ceph-devel` on OFTC
 
