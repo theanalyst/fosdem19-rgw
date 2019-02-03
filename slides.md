@@ -7,7 +7,7 @@
 --
 
 ### RGW
-+ A RESTful API access to object storage
++ A RESTful API access to object storage (swift/s3)
 + Immutable objects, not 1:1 mapped to rados objects
 + Implements user accounts, acls, buckets
 + heavy ecosystem of s3/swift client tooling can be leveraged against RGW
@@ -30,13 +30,22 @@
 
 ## Multisite
 
-+ Built on principle that data changes are frequent, metadata changes
-  not so much
++ Geographical redundancy with async data replication*
 + Data is replicated across zones, within zonegroups. Realms can
   partition data in to namespaces.
++ Built on principle that data changes are frequent, metadata changes
+  not so much
 + There is a master zone which will be the source of truth for all
   metadata
 + Data CP in local cluster, AP in remote
+
+--
+
+### Async Export?
+
+Since we have the ability to notify the remote zone on data changes,
+an we utilize this for further external services?
+
 
 ---
 
